@@ -11,12 +11,12 @@ exports.handler = async function (event) {
   try {
     const body = JSON.parse(event.body);
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    // Groq uses OpenAI-compatible API format
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify(body),
     });
