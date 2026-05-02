@@ -6,263 +6,158 @@
 <title>LogSense AI — Enterprise Log Monitor</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #0f1117;
-    --bg2: #161b22;
-    --bg3: #1c2128;
-    --border: #30363d;
-    --border2: #444c56;
-    --text: #e6edf3;
-    --text2: #8b949e;
-    --text3: #6e7681;
-    --green: #3fb950;
-    --green-bg: #0d2119;
-    --green-border: #1a4428;
-    --red: #f85149;
-    --red-bg: #2d0e0e;
-    --amber: #d29922;
-    --amber-bg: #2a1f00;
-    --blue: #58a6ff;
-    --blue-bg: #0d1e36;
-    --tag-email: #f0997b;
-    --tag-bg: #2a1500;
-    --tag-border: #5a2e00;
-    --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-    --sans: 'Inter', system-ui, sans-serif;
-    --radius: 8px;
-    --radius-lg: 12px;
+    --bg: #0f1117; --bg2: #161b22; --bg3: #1c2128;
+    --border: #30363d; --border2: #444c56;
+    --text: #e6edf3; --text2: #8b949e; --text3: #6e7681;
+    --green: #3fb950; --green-bg: #0d2119; --green-border: #1a4428;
+    --red: #f85149; --red-bg: #2d0e0e; --red-border: #5a1a1a;
+    --amber: #d29922; --amber-bg: #2a1f00; --amber-border: #5a4500;
+    --blue: #58a6ff; --blue-bg: #0d1e36; --blue-border: #1a3a6c;
+    --purple: #bc8cff; --purple-bg: #1a0d2e;
+    --tag-email: #f0997b; --tag-bg: #2a1500; --tag-border: #5a2e00;
+    --mono: 'JetBrains Mono','Fira Code','Cascadia Code',monospace;
+    --sans: 'Inter',system-ui,sans-serif;
+    --radius: 8px; --radius-lg: 12px;
   }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-  body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--text);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .header {
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg2);
-    flex-shrink: 0;
-  }
+  /* Header */
+  .header { padding: 12px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg2); flex-shrink: 0; }
   .header-left { display: flex; align-items: center; gap: 12px; }
-  .logo {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, #1a3a5c, #0d2119);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-  }
-  .app-name { font-size: 15px; font-weight: 600; color: var(--text); }
-  .app-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .badge-safe {
-    font-size: 10px; font-weight: 500;
-    padding: 3px 10px; border-radius: 99px;
-    background: var(--green-bg); color: var(--green);
-    border: 1px solid var(--green-border);
-  }
+  .logo { width: 32px; height: 32px; background: linear-gradient(135deg,#1a3a5c,#0d2119); border: 1px solid var(--border2); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .app-name { font-size: 15px; font-weight: 600; }
+  .app-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .badge-safe { font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 99px; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
 
-  .api-bar {
-    padding: 10px 20px;
-    background: var(--amber-bg);
-    border-bottom: 1px solid var(--amber);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-  }
+  /* API bar */
+  .api-bar { padding: 10px 20px; background: var(--amber-bg); border-bottom: 1px solid var(--amber); display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .api-bar label { font-size: 12px; color: var(--amber); white-space: nowrap; font-weight: 500; }
-  .api-bar input {
-    flex: 1;
-    background: #1a1500;
-    border: 1px solid #5a4500;
-    border-radius: var(--radius);
-    padding: 6px 10px;
-    font-size: 12px;
-    font-family: var(--mono);
-    color: var(--text);
-    outline: none;
-  }
+  .api-bar input { flex: 1; background: #1a1500; border: 1px solid var(--amber-border); border-radius: var(--radius); padding: 6px 10px; font-size: 12px; font-family: var(--mono); color: var(--text); outline: none; }
   .api-bar input:focus { border-color: var(--amber); }
   .api-bar input::placeholder { color: var(--text3); }
   .api-bar-hint { font-size: 11px; color: var(--text3); white-space: nowrap; }
   .api-bar-hint a { color: var(--blue); text-decoration: none; }
-  .api-bar-hint a:hover { text-decoration: underline; }
-  .api-saved {
-    display: none;
-    padding: 10px 20px;
-    background: var(--green-bg);
-    border-bottom: 1px solid var(--green-border);
-    font-size: 12px;
-    color: var(--green);
-    flex-shrink: 0;
-  }
+  .api-saved { display: none; padding: 10px 20px; background: var(--green-bg); border-bottom: 1px solid var(--green-border); font-size: 12px; color: var(--green); flex-shrink: 0; }
 
+  /* Main */
   .main { display: flex; flex: 1; overflow: hidden; }
 
-  .left-panel {
-    width: 360px;
-    flex-shrink: 0;
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    background: var(--bg2);
-    overflow: hidden;
-  }
-  .panel-header {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .panel-title {
-    font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--text3);
-  }
+  /* Left panel */
+  .left-panel { width: 380px; flex-shrink: 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; background: var(--bg2); overflow-y: auto; overflow-x: hidden; }
+  .panel-header { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .panel-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
   .clear-btn { font-size: 11px; color: var(--text3); background: none; border: none; cursor: pointer; }
   .clear-btn:hover { color: var(--text2); }
 
-  .log-input-wrap { padding: 12px; }
-  #logInput {
-    width: 100%; height: 180px; resize: none;
-    font-family: var(--mono); font-size: 11px; line-height: 1.7;
-    color: var(--text); background: var(--bg3);
-    border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 10px 12px; outline: none; transition: border-color 0.15s;
-  }
+  /* Upload zone */
+  .upload-zone { margin: 12px; border: 1.5px dashed var(--border2); border-radius: var(--radius); padding: 14px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; flex-shrink: 0; }
+  .upload-zone:hover, .upload-zone.drag-over { border-color: var(--blue); background: #0a1520; }
+  .upload-icon { font-size: 22px; margin-bottom: 6px; }
+  .upload-text { font-size: 12px; color: var(--text2); }
+  .upload-sub { font-size: 10px; color: var(--text3); margin-top: 3px; }
+  #fileInput { display: none; }
+
+  /* Divider */
+  .or-divider { display: flex; align-items: center; gap: 8px; padding: 0 12px; margin-bottom: 4px; flex-shrink: 0; }
+  .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .or-divider span { font-size: 10px; color: var(--text3); }
+
+  /* Log textarea */
+  .log-input-wrap { padding: 4px 12px 8px; flex-shrink: 0; }
+  #logInput { width: 100%; height: 130px; resize: none; font-family: var(--mono); font-size: 11px; line-height: 1.7; color: var(--text); background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; outline: none; }
   #logInput:focus { border-color: var(--border2); }
   #logInput::placeholder { color: var(--text3); }
 
-  .redact-section {
-    padding: 8px 12px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .redact-title {
-    font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--text3); margin-bottom: 7px;
-  }
+  /* Log type badge */
+  .log-type-row { padding: 6px 12px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .log-type-label { font-size: 10px; color: var(--text3); }
+  .log-type-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; font-family: var(--mono); }
+  .lt-java    { background: #1a2a0d; color: #7ee787; border: 1px solid #2d4a1a; }
+  .lt-node    { background: #0d2a1a; color: #3fb950; border: 1px solid #1a4428; }
+  .lt-python  { background: #0d1e36; color: #58a6ff; border: 1px solid var(--blue-border); }
+  .lt-dotnet  { background: #1a0d2e; color: #bc8cff; border: 1px solid #3a1a5a; }
+  .lt-generic { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+
+  /* Severity dashboard */
+  .severity-dash { margin: 6px 12px 8px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; flex-shrink: 0; }
+  .severity-header { padding: 7px 12px; background: var(--bg3); border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); display: flex; align-items: center; justify-content: space-between; }
+  .severity-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .sev-cell { padding: 10px 8px; text-align: center; border-right: 1px solid var(--border); }
+  .sev-cell:last-child { border-right: none; }
+  .sev-count { font-size: 20px; font-weight: 700; font-family: var(--mono); line-height: 1; }
+  .sev-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+  .sev-error  .sev-count { color: var(--red); }
+  .sev-error  .sev-label { color: #7a3030; }
+  .sev-warn   .sev-count { color: var(--amber); }
+  .sev-warn   .sev-label { color: #7a5a00; }
+  .sev-info   .sev-count { color: var(--blue); }
+  .sev-info   .sev-label { color: #1a4a7a; }
+  .sev-debug  .sev-count { color: var(--text3); }
+  .sev-debug  .sev-label { color: #3a3a3a; }
+  .sev-bar-row { padding: 6px 12px 8px; display: flex; gap: 2px; height: 6px; }
+  .sev-bar-seg { border-radius: 2px; transition: width 0.3s; }
+
+  /* Redact section */
+  .redact-section { padding: 8px 12px; border-top: 1px solid var(--border); flex-shrink: 0; }
+  .redact-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 7px; }
   .redact-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .rtag {
-    font-size: 10px; font-family: var(--mono);
-    padding: 2px 7px; border-radius: 4px;
-    background: var(--tag-bg); color: var(--tag-email);
-    border: 1px solid var(--tag-border);
-  }
+  .rtag { font-size: 10px; font-family: var(--mono); padding: 2px 7px; border-radius: 4px; background: var(--tag-bg); color: var(--tag-email); border: 1px solid var(--tag-border); }
 
-  .preview-wrap {
-    padding: 10px 12px; flex: 1; overflow: hidden;
-    display: flex; flex-direction: column;
-  }
-  .preview-label {
-    font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--text3); margin-bottom: 6px;
-  }
-  #redactedPreview {
-    flex: 1; overflow-y: auto;
-    font-family: var(--mono); font-size: 10px; line-height: 1.8;
-    color: var(--text2); background: var(--bg3);
-    border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 8px 10px; white-space: pre-wrap; word-break: break-all;
-  }
+  /* Preview */
+  .preview-wrap { padding: 8px 12px; flex-shrink: 0; }
+  .preview-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 6px; }
+  #redactedPreview { max-height: 90px; overflow-y: auto; font-family: var(--mono); font-size: 10px; line-height: 1.8; color: var(--text2); background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; white-space: pre-wrap; word-break: break-all; }
 
-  .analyze-btn {
-    margin: 10px 12px; padding: 10px 16px;
-    background: #0d2119; border: 1px solid var(--green-border);
-    border-radius: var(--radius); color: var(--green);
-    font-size: 13px; font-weight: 500; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    transition: background 0.15s, border-color 0.15s; flex-shrink: 0;
-  }
+  /* Analyze btn */
+  .analyze-btn { margin: 8px 12px 12px; padding: 10px 16px; background: var(--green-bg); border: 1px solid var(--green-border); border-radius: var(--radius); color: var(--green); font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s; flex-shrink: 0; }
   .analyze-btn:hover:not(:disabled) { background: #102b20; border-color: var(--green); }
   .analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .right-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+  /* Right panel */
+  .right-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .chat-area { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .chat-area::-webkit-scrollbar, #redactedPreview::-webkit-scrollbar, .left-panel::-webkit-scrollbar { width: 4px; }
+  .chat-area::-webkit-scrollbar-thumb, #redactedPreview::-webkit-scrollbar-thumb, .left-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-  .chat-area {
-    flex: 1; overflow-y: auto; padding: 16px;
-    display: flex; flex-direction: column; gap: 14px;
-  }
-  .chat-area::-webkit-scrollbar,
-  #redactedPreview::-webkit-scrollbar { width: 4px; }
-  .chat-area::-webkit-scrollbar-thumb,
-  #redactedPreview::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-  .empty-state {
-    flex: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 10px; color: var(--text3); text-align: center; padding: 40px;
-  }
+  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--text3); text-align: center; padding: 40px; }
   .empty-icon { font-size: 36px; margin-bottom: 4px; }
   .empty-title { font-size: 14px; color: var(--text2); font-weight: 500; }
-  .empty-sub { font-size: 12px; }
+  .empty-sub { font-size: 12px; line-height: 1.6; }
 
-  .msg { display: flex; flex-direction: column; gap: 4px; max-width: 85%; }
+  .msg { display: flex; flex-direction: column; gap: 4px; max-width: 88%; }
   .msg-user { align-self: flex-end; }
-  .msg-ai   { align-self: flex-start; }
+  .msg-ai { align-self: flex-start; }
   .msg-label { font-size: 10px; color: var(--text3); padding: 0 4px; }
   .msg-user .msg-label { text-align: right; }
   .msg-bubble { padding: 10px 14px; border-radius: var(--radius-lg); font-size: 13px; line-height: 1.65; }
   .msg-user .msg-bubble { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
-  .msg-ai .msg-bubble   { background: var(--bg2); border: 1px solid var(--border); color: var(--text); }
+  .msg-ai .msg-bubble { background: var(--bg2); border: 1px solid var(--border); color: var(--text); }
 
   .typing-wrap { align-self: flex-start; }
-  .typing {
-    display: flex; align-items: center; gap: 5px;
-    padding: 10px 14px; background: var(--bg2);
-    border: 1px solid var(--border); border-radius: var(--radius-lg);
-  }
+  .typing { display: flex; align-items: center; gap: 5px; padding: 10px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); animation: blink 1.2s infinite; }
   .dot:nth-child(2) { animation-delay: 0.2s; }
   .dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes blink { 0%,80%,100% { opacity: 0.2; } 40% { opacity: 1; } }
+  @keyframes blink { 0%,80%,100%{opacity:0.2}40%{opacity:1} }
 
-  .chat-footer {
-    padding: 12px 16px; border-top: 1px solid var(--border);
-    display: flex; gap: 8px; align-items: flex-end;
-    background: var(--bg2); flex-shrink: 0;
-  }
-  #chatInput {
-    flex: 1; resize: none; height: 42px;
-    font-family: var(--sans); font-size: 13px; padding: 10px 12px;
-    background: var(--bg3); border: 1px solid var(--border);
-    border-radius: var(--radius); color: var(--text); outline: none;
-    line-height: 1.4; transition: border-color 0.15s;
-  }
+  .chat-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; background: var(--bg2); flex-shrink: 0; }
+  #chatInput { flex: 1; resize: none; height: 42px; font-family: var(--sans); font-size: 13px; padding: 10px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); outline: none; line-height: 1.4; }
   #chatInput:focus { border-color: var(--border2); }
   #chatInput::placeholder { color: var(--text3); }
-
-  .send-btn {
-    height: 42px; padding: 0 18px;
-    background: var(--blue-bg); border: 1px solid #1a3a6c;
-    border-radius: var(--radius); color: var(--blue);
-    font-size: 13px; font-weight: 500; cursor: pointer;
-    white-space: nowrap; transition: background 0.15s;
-  }
+  .send-btn { height: 42px; padding: 0 18px; background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: var(--radius); color: var(--blue); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
   .send-btn:hover:not(:disabled) { background: #102244; }
   .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   #statusText { font-size: 11px; color: var(--text3); }
+  .toast { position: fixed; bottom: 20px; right: 20px; background: var(--red-bg); border: 1px solid var(--red); color: var(--red); font-size: 12px; padding: 10px 16px; border-radius: var(--radius); display: none; z-index: 999; max-width: 380px; line-height: 1.5; }
+  .footer { padding: 7px 20px; border-top: 1px solid var(--border); background: var(--bg2); display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; }
+  .footer-text { font-size: 11px; color: var(--text3); }
+  .footer-text a { color: var(--text3); text-decoration: none; transition: color 0.15s; }
+  .footer-text a:hover { color: var(--blue); }
 
-  .toast {
-    position: fixed; bottom: 20px; right: 20px;
-    background: var(--red-bg); border: 1px solid var(--red);
-    color: var(--red); font-size: 12px; padding: 10px 16px;
-    border-radius: var(--radius); display: none; z-index: 999; max-width: 360px;
-  }
+  .filename-badge { margin: 0 12px 0; padding: 5px 10px; background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: var(--radius); font-size: 11px; color: var(--blue); font-family: var(--mono); display: none; align-items: center; gap: 6px; flex-shrink: 0; }
+  .filename-badge span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -280,9 +175,9 @@
 
 <div class="api-bar" id="apiBar">
   <label>🔑 API Key</label>
-  <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off" />
-  <button onclick="saveKey()" style="padding:5px 12px;background:#2a1f00;border:1px solid #5a4500;border-radius:6px;color:var(--amber);font-size:12px;cursor:pointer;">Save</button>
-  <span class="api-bar-hint">Get key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></span>
+  <input type="password" id="apiKeyInput" placeholder="gsk_..." autocomplete="off"/>
+  <button onclick="saveKey()" style="padding:5px 12px;background:#2a1f00;border:1px solid var(--amber-border);border-radius:6px;color:var(--amber);font-size:12px;cursor:pointer;">Save</button>
+  <span class="api-bar-hint">Free key at <a href="https://console.groq.com" target="_blank">console.groq.com</a></span>
 </div>
 <div class="api-saved" id="apiSaved">
   ✓ API key saved for this session &nbsp;·&nbsp;
@@ -290,60 +185,105 @@
 </div>
 
 <div class="main">
+  <!-- LEFT PANEL -->
   <div class="left-panel">
     <div class="panel-header">
       <span class="panel-title">Log Input</span>
       <button class="clear-btn" onclick="clearAll()">clear all</button>
     </div>
+
+    <!-- Upload zone -->
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()"
+         ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <div class="upload-icon">📂</div>
+      <div class="upload-text">Drop a log file or click to browse</div>
+      <div class="upload-sub">.log · .txt · .out · any text file</div>
+    </div>
+    <input type="file" id="fileInput" accept=".log,.txt,.out,.trace,.err,text/*" onchange="handleFileSelect(event)"/>
+
+    <div class="filename-badge" id="filenameBadge">
+      <span id="filenameText"></span>
+      <span onclick="clearFile()" style="cursor:pointer;color:var(--text3);font-size:13px;">✕</span>
+    </div>
+
+    <div class="or-divider"><span>or paste manually</span></div>
+
     <div class="log-input-wrap">
       <textarea id="logInput" placeholder="Paste your log trace here...
 
-Example:
-2024-01-15 14:32:01 ERROR NullPointerException
+2024-01-15 ERROR NullPointerException
   at UserService.getUser(UserService.java:142)
-User: john@company.com
-IP: 192.168.1.105
-Token: eyJhbGciOiJIUzI1NiJ9..." oninput="updatePreview()"></textarea>
+User: john@company.com IP: 192.168.1.1" oninput="onLogChange()"></textarea>
     </div>
 
+    <!-- Log type -->
+    <div class="log-type-row">
+      <span class="log-type-label">Detected stack:</span>
+      <span class="log-type-badge lt-generic" id="logTypeBadge">—</span>
+    </div>
+
+    <!-- Severity dashboard -->
+    <div class="severity-dash" id="severityDash">
+      <div class="severity-header">
+        <span>Severity breakdown</span>
+        <span id="totalLines" style="color:var(--text3);">0 lines</span>
+      </div>
+      <div class="severity-grid">
+        <div class="sev-cell sev-error">
+          <div class="sev-count" id="errCount">0</div>
+          <div class="sev-label">Errors</div>
+        </div>
+        <div class="sev-cell sev-warn">
+          <div class="sev-count" id="warnCount">0</div>
+          <div class="sev-label">Warnings</div>
+        </div>
+        <div class="sev-cell sev-info">
+          <div class="sev-count" id="infoCount">0</div>
+          <div class="sev-label">Info</div>
+        </div>
+        <div class="sev-cell sev-debug">
+          <div class="sev-count" id="debugCount">0</div>
+          <div class="sev-label">Debug</div>
+        </div>
+      </div>
+      <div class="sev-bar-row" id="sevBarRow"></div>
+    </div>
+
+    <!-- Redact tags -->
     <div class="redact-section">
       <div class="redact-title">Auto-redacting before AI sees it</div>
       <div class="redact-tags">
-        <span class="rtag">[EMAIL]</span>
-        <span class="rtag">[IP_ADDRESS]</span>
-        <span class="rtag">[JWT_TOKEN]</span>
-        <span class="rtag">[PHONE]</span>
-        <span class="rtag">[CARD]</span>
-        <span class="rtag">[UUID]</span>
-        <span class="rtag">[ID]</span>
-        <span class="rtag">[REDACTED]</span>
+        <span class="rtag">[EMAIL]</span><span class="rtag">[IP_ADDRESS]</span>
+        <span class="rtag">[JWT_TOKEN]</span><span class="rtag">[PHONE]</span>
+        <span class="rtag">[CARD]</span><span class="rtag">[UUID]</span>
+        <span class="rtag">[ID]</span><span class="rtag">[REDACTED]</span>
       </div>
     </div>
 
+    <!-- Preview -->
     <div class="preview-wrap">
       <div class="preview-label">Redacted preview — what AI receives</div>
-      <div id="redactedPreview" style="font-style:italic;color:var(--text3);">Paste logs above to preview redacted version...</div>
+      <div id="redactedPreview" style="font-style:italic;color:var(--text3);">Paste or upload logs to preview...</div>
     </div>
 
-    <button class="analyze-btn" id="analyzeBtn" onclick="analyzeLog()">
-      ⚡ Analyze Logs
-    </button>
+    <button class="analyze-btn" id="analyzeBtn" onclick="analyzeLog()">⚡ Analyze Logs</button>
   </div>
 
+  <!-- RIGHT PANEL -->
   <div class="right-panel">
     <div class="panel-header">
       <span class="panel-title">AI Analysis</span>
-      <span id="statusText">Paste logs to begin</span>
+      <span id="statusText">Paste or upload logs to begin</span>
     </div>
     <div class="chat-area" id="chatArea">
       <div class="empty-state" id="emptyState">
         <div class="empty-icon">📋</div>
         <div class="empty-title">No logs analyzed yet</div>
-        <div class="empty-sub">Paste a log trace on the left and click Analyze Logs.<br/>Customer data is auto-redacted before sending to AI.</div>
+        <div class="empty-sub">Upload a .log file or paste a trace on the left.<br/>PII is auto-redacted before anything reaches the AI.</div>
       </div>
     </div>
     <div class="chat-footer">
-      <textarea id="chatInput" placeholder="Ask a follow-up... e.g. 'how do I fix this?' or 'could this cause a memory leak?'" onkeydown="handleKey(event)"></textarea>
+      <textarea id="chatInput" placeholder="Ask a follow-up... e.g. 'how do I fix this?' or 'is this a memory leak?'" onkeydown="handleKey(event)"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendFollowUp()">Send ↗</button>
     </div>
   </div>
@@ -351,232 +291,337 @@ Token: eyJhbGciOiJIUzI1NiJ9..." oninput="updatePreview()"></textarea>
 
 <div class="toast" id="toast"></div>
 
+<div class="footer">
+  <span class="footer-text">
+    Built by <a href="https://www.linkedin.com/in/aditya-ghugul" target="_blank">Aditya Ghugul</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/aditya-ghugul" target="_blank">LinkedIn ↗</a>
+  </span>
+</div>
+
 <script>
-  let conversationHistory = [];
-  let logContext = '';
-  let apiKey = '';
+let conversationHistory = [];
+let logContext = '';
+let apiKey = '';
+let detectedLogType = 'generic';
 
-  function saveKey() {
-    const val = document.getElementById('apiKeyInput').value.trim();
-    if (!val.startsWith('sk-ant')) {
-      showToast('That does not look like a valid Anthropic API key. It should start with sk-ant...');
-      return;
-    }
-    apiKey = val;
-    document.getElementById('apiBar').style.display = 'none';
-    document.getElementById('apiSaved').style.display = 'block';
+// ── API Key ──────────────────────────────────────────────
+function saveKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  if (!val.startsWith('gsk_')) { showToast('Invalid Groq API key — should start with gsk_...'); return; }
+  apiKey = val;
+  document.getElementById('apiBar').style.display = 'none';
+  document.getElementById('apiSaved').style.display = 'block';
+}
+function resetKey() {
+  apiKey = '';
+  document.getElementById('apiKeyInput').value = '';
+  document.getElementById('apiBar').style.display = 'flex';
+  document.getElementById('apiSaved').style.display = 'none';
+}
+
+// ── File handling ────────────────────────────────────────
+function handleDragOver(e) { e.preventDefault(); document.getElementById('uploadZone').classList.add('drag-over'); }
+function handleDragLeave(e) { document.getElementById('uploadZone').classList.remove('drag-over'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) readFile(file);
+}
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) readFile(file);
+}
+function readFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const content = e.target.result;
+    document.getElementById('logInput').value = content;
+    document.getElementById('filenameBadge').style.display = 'flex';
+    document.getElementById('filenameText').textContent = '📄 ' + file.name;
+    onLogChange();
+  };
+  reader.readAsText(file);
+}
+function clearFile() {
+  document.getElementById('fileInput').value = '';
+  document.getElementById('filenameBadge').style.display = 'none';
+  document.getElementById('logInput').value = '';
+  onLogChange();
+}
+
+// ── Log type detection ───────────────────────────────────
+function detectLogType(text) {
+  if (!text.trim()) return 'generic';
+  const t = text.toLowerCase();
+  if (t.includes('at com.') || t.includes('at org.') || t.includes('at java.') || t.includes('exception') && t.includes('.java:')) return 'java';
+  if (t.includes('error:') && (t.includes('node_modules') || t.includes('at object.') || t.includes('unhandledpromiserejection'))) return 'node';
+  if (t.includes('traceback (most recent call last)') || t.includes('.py", line') || t.includes('nameerror:') || t.includes('typeerror:') && t.includes('python')) return 'python';
+  if (t.includes('system.') || t.includes('microsoft.') || t.includes('asp.net') || t.includes('.cs:line')) return 'dotnet';
+  if (t.includes('exception') || t.includes('.java:')) return 'java';
+  return 'generic';
+}
+
+function getLogTypeLabel(type) {
+  const map = { java: 'Java / Spring', node: 'Node.js', python: 'Python', dotnet: '.NET / C#', generic: 'Generic' };
+  return map[type] || 'Generic';
+}
+function getLogTypeClass(type) {
+  const map = { java: 'lt-java', node: 'lt-node', python: 'lt-python', dotnet: 'lt-dotnet', generic: 'lt-generic' };
+  return map[type] || 'lt-generic';
+}
+
+// ── Severity parsing ─────────────────────────────────────
+function parseSeverity(text) {
+  const lines = text.split('\n');
+  let errors = 0, warns = 0, infos = 0, debugs = 0;
+  lines.forEach(line => {
+    const l = line.toUpperCase();
+    if (l.includes(' ERROR') || l.includes('[ERROR]') || l.includes('SEVERE') || l.includes('FATAL') || l.includes('EXCEPTION') || l.includes('CRITICAL')) errors++;
+    else if (l.includes(' WARN') || l.includes('[WARN]') || l.includes('WARNING')) warns++;
+    else if (l.includes(' INFO') || l.includes('[INFO]')) infos++;
+    else if (l.includes(' DEBUG') || l.includes('[DEBUG]') || l.includes('TRACE') || l.includes('[TRACE]')) debugs++;
+  });
+  return { errors, warns, infos, debugs, total: lines.filter(l => l.trim()).length };
+}
+
+function updateSeverityDash(text) {
+  const { errors, warns, infos, debugs, total } = parseSeverity(text);
+  document.getElementById('errCount').textContent  = errors;
+  document.getElementById('warnCount').textContent = warns;
+  document.getElementById('infoCount').textContent = infos;
+  document.getElementById('debugCount').textContent= debugs;
+  document.getElementById('totalLines').textContent = total + ' lines';
+
+  const sum = errors + warns + infos + debugs || 1;
+  const bar = document.getElementById('sevBarRow');
+  bar.innerHTML = '';
+  const segments = [
+    { val: errors, color: '#f85149' },
+    { val: warns,  color: '#d29922' },
+    { val: infos,  color: '#58a6ff' },
+    { val: debugs, color: '#444c56' },
+  ];
+  segments.forEach(s => {
+    if (s.val === 0) return;
+    const d = document.createElement('div');
+    d.className = 'sev-bar-seg';
+    d.style.cssText = `width:${Math.round(s.val/sum*100)}%;background:${s.color};height:6px;`;
+    bar.appendChild(d);
+  });
+}
+
+// ── PII Redaction ────────────────────────────────────────
+function redactPII(text) {
+  return text
+    .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, '[EMAIL]')
+    .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, '[IP_ADDRESS]')
+    .replace(/\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, '[PHONE]')
+    .replace(/\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13})\b/g, '[CARD]')
+    .replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*/g, '[JWT_TOKEN]')
+    .replace(/\b[Bb]earer\s+[A-Za-z0-9\-._~+\/]+=*/g, 'Bearer [TOKEN]')
+    .replace(/\b(token|api_key|apikey|secret|password|passwd|pwd)\s*[:=]\s*\S+/gi, '$1=[REDACTED]')
+    .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '[UUID]')
+    .replace(/\b\d{10,}\b/g, '[ID]');
+}
+
+// ── On log change ────────────────────────────────────────
+function onLogChange() {
+  const raw = document.getElementById('logInput').value;
+  const preview = document.getElementById('redactedPreview');
+
+  if (!raw.trim()) {
+    preview.textContent = 'Paste or upload logs to preview...';
+    preview.style.fontStyle = 'italic';
+    preview.style.color = 'var(--text3)';
+    document.getElementById('logTypeBadge').textContent = '—';
+    document.getElementById('logTypeBadge').className = 'log-type-badge lt-generic';
+    updateSeverityDash('');
+    return;
   }
 
-  function resetKey() {
-    apiKey = '';
-    document.getElementById('apiKeyInput').value = '';
-    document.getElementById('apiBar').style.display = 'flex';
-    document.getElementById('apiSaved').style.display = 'none';
+  // detect type
+  detectedLogType = detectLogType(raw);
+  const badge = document.getElementById('logTypeBadge');
+  badge.textContent = getLogTypeLabel(detectedLogType);
+  badge.className = 'log-type-badge ' + getLogTypeClass(detectedLogType);
+
+  // severity
+  updateSeverityDash(raw);
+
+  // redact preview
+  preview.style.fontStyle = 'normal';
+  preview.style.color = 'var(--text2)';
+  preview.textContent = redactPII(raw);
+}
+
+// ── System prompts per stack ─────────────────────────────
+function getSystemPrompt(logType) {
+  const base = `You are an expert log analysis assistant for enterprise applications.
+Analyze log traces and provide clear, actionable root cause analysis.
+
+Format your response with these sections:
+Root Cause: (1-2 sentences — exactly what went wrong)
+Details: (explain the error chain and what triggered it)
+Fix: (numbered steps to resolve — be specific)
+Prevention: (1-2 tips to avoid recurrence)
+
+Be concise and technical. No fluff.
+Note: [EMAIL], [IP_ADDRESS], [JWT_TOKEN], [UUID] etc. are redacted for privacy — expected, work with what's available.`;
+
+  const extras = {
+    java:    '\n\nThis is a Java/Spring Boot application. Pay attention to Spring bean lifecycle, dependency injection errors, JPA/Hibernate issues, and classpath problems.',
+    node:    '\n\nThis is a Node.js application. Watch for async/await issues, unhandled promise rejections, event loop blocking, and npm dependency conflicts.',
+    python:  '\n\nThis is a Python application. Look for indentation issues, import errors, type mismatches, and virtual environment problems.',
+    dotnet:  '\n\nThis is a .NET/C# application. Focus on null reference exceptions, async deadlocks, dependency injection issues, and Entity Framework problems.',
+    generic: ''
+  };
+  return base + (extras[logType] || '');
+}
+
+// ── Groq API (OpenAI-compatible format) ─────────────────
+async function callClaude(messages) {
+  // Groq expects system prompt as first message in array
+  const groqMessages = [
+    { role: 'system', content: getSystemPrompt(detectedLogType) },
+    ...messages
+  ];
+
+  const res = await fetch('/api/proxy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',  // Free on Groq, great quality
+      max_tokens: 1024,
+      messages: groqMessages
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    const msg = err?.error?.message || `HTTP ${res.status}`;
+    if (res.status === 401) throw new Error('Invalid API key. Please re-enter your Groq key.');
+    if (res.status === 429) throw new Error('Rate limit hit. Wait a moment and try again.');
+    throw new Error('API error: ' + msg);
+  }
+  const data = await res.json();
+  // Groq returns OpenAI format: choices[0].message.content
+  return data.choices?.[0]?.message?.content || 'No response received.';
+}
+
+// ── Chat helpers ─────────────────────────────────────────
+function addMessage(role, content) {
+  const chatArea = document.getElementById('chatArea');
+  const empty = document.getElementById('emptyState');
+  if (empty) empty.remove();
+  const div = document.createElement('div');
+  div.className = `msg msg-${role === 'user' ? 'user' : 'ai'}`;
+  const formatted = content
+    .replace(/\n/g, '<br>')
+    .replace(/(Root Cause:|Details:|Fix:|Prevention:|Error:|Warning:)/g, '<strong style="color:var(--text)">$1</strong>');
+  div.innerHTML = `<div class="msg-label">${role === 'user' ? 'You' : '🔍 LogSense AI'}</div><div class="msg-bubble">${formatted}</div>`;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function addTyping() {
+  const chatArea = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'typing-wrap';
+  div.id = 'typingIndicator';
+  div.innerHTML = `<div class="msg-label">🔍 LogSense AI</div><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+function removeTyping() { const t = document.getElementById('typingIndicator'); if(t) t.remove(); }
+function setStatus(t) { document.getElementById('statusText').textContent = t; }
+function showToast(msg, d=5000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, d);
+}
+
+// ── Analyze ──────────────────────────────────────────────
+async function analyzeLog() {
+  if (!apiKey) { showToast('Please enter and save your Anthropic API key first.'); return; }
+  const raw = document.getElementById('logInput').value.trim();
+  if (!raw) { showToast('Please paste or upload some log content first.'); return; }
+
+  const redacted = redactPII(raw);
+  logContext = redacted;
+  conversationHistory = [];
+
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('sendBtn').disabled = true;
+  setStatus('Analyzing ' + getLogTypeLabel(detectedLogType) + ' logs...');
+
+  const userMsg = `Analyze this ${getLogTypeLabel(detectedLogType)} log trace and identify the root cause:\n\n${redacted}`;
+  conversationHistory.push({ role: 'user', content: userMsg });
+  addMessage('user', 'Analyzing ' + getLogTypeLabel(detectedLogType) + ' log trace...');
+  addTyping();
+
+  try {
+    const reply = await callClaude(conversationHistory);
+    conversationHistory.push({ role: 'assistant', content: reply });
+    removeTyping();
+    addMessage('assistant', reply);
+    setStatus('Analysis complete');
+  } catch(e) {
+    removeTyping();
+    showToast(e.message);
+    setStatus('Error — see notification');
   }
 
-  function redactPII(text) {
-    return text
-      .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, '[EMAIL]')
-      .replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g, '[IP_ADDRESS]')
-      .replace(/\b(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, '[PHONE]')
-      .replace(/\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13})\b/g, '[CARD]')
-      .replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*/g, '[JWT_TOKEN]')
-      .replace(/\b[Bb]earer\s+[A-Za-z0-9\-._~+\/]+=*/g, 'Bearer [TOKEN]')
-      .replace(/\b(token|api_key|apikey|secret|password|passwd|pwd)\s*[:=]\s*\S+/gi, '$1=[REDACTED]')
-      .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '[UUID]')
-      .replace(/\b\d{10,}\b/g, '[ID]');
+  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('sendBtn').disabled = false;
+}
+
+// ── Follow-up ────────────────────────────────────────────
+async function sendFollowUp() {
+  if (!apiKey) { showToast('Please enter your API key first.'); return; }
+  const input = document.getElementById('chatInput');
+  const question = input.value.trim();
+  if (!question) return;
+  if (conversationHistory.length === 0) { showToast('Please analyze a log first.'); return; }
+
+  input.value = '';
+  document.getElementById('sendBtn').disabled = true;
+  setStatus('Thinking...');
+  conversationHistory.push({ role: 'user', content: question });
+  addMessage('user', question);
+  addTyping();
+
+  try {
+    const reply = await callClaude(conversationHistory);
+    conversationHistory.push({ role: 'assistant', content: reply });
+    removeTyping();
+    addMessage('assistant', reply);
+    setStatus('Ready');
+  } catch(e) {
+    removeTyping();
+    showToast(e.message);
+    setStatus('Error');
   }
+  document.getElementById('sendBtn').disabled = false;
+}
 
-  function updatePreview() {
-    const raw = document.getElementById('logInput').value;
-    const preview = document.getElementById('redactedPreview');
-    if (!raw.trim()) {
-      preview.textContent = 'Paste logs above to preview redacted version...';
-      preview.style.fontStyle = 'italic';
-      preview.style.color = 'var(--text3)';
-      return;
-    }
-    preview.style.fontStyle = 'normal';
-    preview.style.color = 'var(--text2)';
-    preview.textContent = redactPII(raw);
-  }
+function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendFollowUp();} }
 
-  function showToast(msg, duration = 5000) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, duration);
-  }
-
-  function setStatus(text) {
-    document.getElementById('statusText').textContent = text;
-  }
-
-  function addMessage(role, content) {
-    const chatArea = document.getElementById('chatArea');
-    const empty = document.getElementById('emptyState');
-    if (empty) empty.remove();
-
-    const div = document.createElement('div');
-    div.className = `msg msg-${role === 'user' ? 'user' : 'ai'}`;
-    const formatted = content
-      .replace(/\n/g, '<br>')
-      .replace(/(Root Cause:|Details:|Fix:|Prevention:|Error:|Warning:)/g, '<strong style="color:var(--text)">$1</strong>');
-    div.innerHTML = `
-      <div class="msg-label">${role === 'user' ? 'You' : '🔍 LogSense AI'}</div>
-      <div class="msg-bubble">${formatted}</div>
-    `;
-    chatArea.appendChild(div);
-    chatArea.scrollTop = chatArea.scrollHeight;
-  }
-
-  function addTyping() {
-    const chatArea = document.getElementById('chatArea');
-    const div = document.createElement('div');
-    div.className = 'typing-wrap';
-    div.id = 'typingIndicator';
-    div.innerHTML = `
-      <div class="msg-label">🔍 LogSense AI</div>
-      <div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-    `;
-    chatArea.appendChild(div);
-    chatArea.scrollTop = chatArea.scrollHeight;
-  }
-
-  function removeTyping() {
-    const t = document.getElementById('typingIndicator');
-    if (t) t.remove();
-  }
-
-  async function callClaude(messages) {
-    // ✅ Calls your Netlify proxy instead of Anthropic directly — fixes CORS
-    const res = await fetch('/api/proxy', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
-        system: `You are an expert log analysis assistant for enterprise applications.
-You help developers quickly identify root causes, understand errors, and get actionable fixes from log traces.
-
-Format every analysis clearly with these sections:
-Root Cause: (1-2 sentences, what exactly went wrong)
-Details: (explain the error chain, what triggered it)
-Fix: (numbered list of concrete steps to resolve)
-Prevention: (1-2 tips to avoid this in future)
-
-Be concise and technical. Skip fluff.
-Note: Values like [EMAIL], [IP_ADDRESS], [JWT_TOKEN], [UUID] are redacted for privacy — this is expected. Work with what's available.`,
-        messages
-      })
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      const msg = err?.error?.message || `HTTP ${res.status}`;
-      if (res.status === 401) throw new Error('Invalid API key. Please check and re-enter your key.');
-      if (res.status === 429) throw new Error('Rate limit hit. Wait a moment and try again.');
-      throw new Error(`API error: ${msg}`);
-    }
-
-    const data = await res.json();
-    return data.content?.[0]?.text || 'No response received.';
-  }
-
-  async function analyzeLog() {
-    if (!apiKey) {
-      showToast('Please enter and save your Anthropic API key first (yellow bar at top).');
-      return;
-    }
-    const raw = document.getElementById('logInput').value.trim();
-    if (!raw) { showToast('Please paste some log content first.'); return; }
-
-    const redacted = redactPII(raw);
-    logContext = redacted;
-    conversationHistory = [];
-
-    document.getElementById('analyzeBtn').disabled = true;
-    document.getElementById('sendBtn').disabled = true;
-    setStatus('Analyzing...');
-
-    const userMsg = `Analyze this log trace and identify the root cause:\n\n${redacted}`;
-    conversationHistory.push({ role: 'user', content: userMsg });
-
-    addMessage('user', 'Analyzing log trace...');
-    addTyping();
-
-    try {
-      const reply = await callClaude(conversationHistory);
-      conversationHistory.push({ role: 'assistant', content: reply });
-      removeTyping();
-      addMessage('assistant', reply);
-      setStatus('Analysis complete');
-    } catch(e) {
-      removeTyping();
-      showToast(e.message);
-      setStatus('Error — see notification');
-    }
-
-    document.getElementById('analyzeBtn').disabled = false;
-    document.getElementById('sendBtn').disabled = false;
-  }
-
-  async function sendFollowUp() {
-    if (!apiKey) { showToast('Please enter your API key first.'); return; }
-    const input = document.getElementById('chatInput');
-    const question = input.value.trim();
-    if (!question) return;
-    if (conversationHistory.length === 0) {
-      showToast('Please analyze a log first before asking follow-up questions.');
-      return;
-    }
-
-    input.value = '';
-    document.getElementById('sendBtn').disabled = true;
-    setStatus('Thinking...');
-
-    conversationHistory.push({ role: 'user', content: question });
-    addMessage('user', question);
-    addTyping();
-
-    try {
-      const reply = await callClaude(conversationHistory);
-      conversationHistory.push({ role: 'assistant', content: reply });
-      removeTyping();
-      addMessage('assistant', reply);
-      setStatus('Ready');
-    } catch(e) {
-      removeTyping();
-      showToast(e.message);
-      setStatus('Error');
-    }
-
-    document.getElementById('sendBtn').disabled = false;
-  }
-
-  function handleKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFollowUp(); }
-  }
-
-  function clearAll() {
-    document.getElementById('logInput').value = '';
-    document.getElementById('redactedPreview').textContent = 'Paste logs above to preview redacted version...';
-    document.getElementById('redactedPreview').style.fontStyle = 'italic';
-    document.getElementById('redactedPreview').style.color = 'var(--text3)';
-    conversationHistory = [];
-    logContext = '';
-    const chatArea = document.getElementById('chatArea');
-    chatArea.innerHTML = `
-      <div class="empty-state" id="emptyState">
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">No logs analyzed yet</div>
-        <div class="empty-sub">Paste a log trace on the left and click Analyze Logs.<br/>Customer data is auto-redacted before sending to AI.</div>
-      </div>`;
-    setStatus('Paste logs to begin');
-  }
+// ── Clear ────────────────────────────────────────────────
+function clearAll() {
+  document.getElementById('logInput').value = '';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('filenameBadge').style.display = 'none';
+  conversationHistory = []; logContext = ''; detectedLogType = 'generic';
+  onLogChange();
+  document.getElementById('chatArea').innerHTML = `
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">📋</div>
+      <div class="empty-title">No logs analyzed yet</div>
+      <div class="empty-sub">Upload a .log file or paste a trace on the left.<br/>PII is auto-redacted before anything reaches the AI.</div>
+    </div>`;
+  setStatus('Paste or upload logs to begin');
+}
 </script>
 </body>
 </html>
